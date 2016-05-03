@@ -25,47 +25,22 @@
 	</div>
 <div id="md" style="display: none;">
 <!-- markdown -->
-##一.小米路由mini
+##关于
 
-刷Pandorabox，Web设置​界面开启shadowsocks透明代理，启用忽略列表。并确保启动了ss-tunnel，转发dns解析到8.8.4.4
+咕~~(╯﹏╰)b，今天发现新浪博客居然删了我全年的一篇博文。
+[ 备忘一下，Openwrt装Shadowsocks](http://blog.sina.com.cn/s/blog_48856f8a0102vh4d.html)，原因大家都懂的。
 
-ssh登录后，配置dnsmasq，在conf-dir下，生成gfwlist.conf​，将被污染的域名转到ss-tunnel代理的端口
-
-这样就可以使用了，路径是：
-
-被污染的域名到8.8.4.4解析，其他用国内的解析，然后走iptables，国内的ip走国内，其他的走ss
-
-##二.小米路由
-
-升级到2.0的开发版，自带了shadowsocks，但是缺少ss-rules（改iptables用的），且/etc/init.d下的shadowsocks启动脚本有问题，从小米路由mini下备份了一份（已经保存在gmail）。
-
-使用替换后的脚本启动ss，透明代理端口9080
-
-配置dnsmasq，在conf-dir下，生成gfwlist.conf​，将被污染的域名转到ss-tunnel代理的端口​，并且将gfwlist的域名全部转到一个ipset分组：gfwlist
-
-注意小米路由的dnsmasq的conf-dir目录每次开机启动会被清空，并从/etc/dnsmasq.d目录复制一份过去，因此要将文件复制到这个目录里
-
-在/etc/rc.local里增加两句
-~~~~
-ipset -N gfwlist iphash
-
-iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 9080
-~~~~
-​这样就可以使用了，路径是：
-
-被gfwlist的域名到8.8.4.4解析，其他用国内的解析，然后走iptables，gfwlist的ip走ss，其他走国内
-
-##三.两种模式的区别
-
-​小米路由mini的是白名单模式，白名单的网址放行走国内，其他都走ss。好处是，万一有新开的国外网站，也能走ss加速，坏处是费ss流量
-
-小米路由是黑名单模式，黑名单的走ss，其他都走国内。好处是精确配置，不浪费ss流量，坏处是一有新增的就要改gfwlist文件​
-
+虽然我找人恢复了，但是这样的环境太不安全了，所以还是乖乖的将博客迁移到github上吧，这个博客是用[simple](https://github.com/isnowfy/simple)建立的，很简单，但能用就行了。
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
 <!-- content -->
+<h2 id="">关于</h2>
 
+<p>咕~~(╯﹏╰)b，今天发现新浪博客居然删了我全年的一篇博文。
+<a href="http://blog.sina.com.cn/s/blog_48856f8a0102vh4d.html"> 备忘一下，Openwrt装Shadowsocks</a>，原因大家都懂的。</p>
+
+<p>虽然我找人恢复了，但是这样的环境太不安全了，所以还是乖乖的将博客迁移到github上吧，这个博客是用<a href="https://github.com/isnowfy/simple">simple</a>建立的，很简单，但能用就行了。</p>
 <!-- content end -->
 </div>
 <br>
