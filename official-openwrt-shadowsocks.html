@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+毅爷走后留下一台linksys wrt54gs，我闲来无事就想刷成透明代理，结果经历很多曲折，这里记一下，备忘。
+
+1.机器已经刷了tomato daulwan固件，直接刷官网的固件就能刷到openwrt，固件地址：http://downloads.openwrt.org/attitude_adjustment/12.09/brcm47xx/generic/openwrt-brcm47xx-squashfs.trx​
+
+2.机器可能被改过，刷成openwrt后，lan4口是wan口，切记切记
+
+3.官方的openwrt的iptables没有ipset和--to-port,要另装：
+
+opkg install iptables-mod-nat-extra
+
+opkg install ipset
+
+4.备份/etc/init.d/dnsmasq，因为等下要装的dnsmasq的启动脚本有问题
+
+5.卸载自带的dnsmasq，安装dnsmasq-full，地址：
+
+http://sourceforge.net/projects/openwrt-dist/files/dnsmasq/
+​​​​​记得依赖包一定要装，libgmp，libnettle,要装作者提供的版本
+
+6.其他没什么了，用备份的dnsmasq替换现有的，就可以了，然后剩下的就是
+
+安装配置ss，配置dnsmasq了
+
+ipset设置：
+
+ipset -N gfwlist iphash
+
+iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>毅爷走后留下一台linksys wrt54gs，我闲来无事就想刷成透明代理，结果经历很多曲折，这里记一下，备忘。</p>
+
+<p>1.机器已经刷了tomato daulwan固件，直接刷官网的固件就能刷到openwrt，固件地址：http://downloads.openwrt.org/attitude_adjustment/12.09/brcm47xx/generic/openwrt-brcm47xx-squashfs.trx​</p>
+
+<p>2.机器可能被改过，刷成openwrt后，lan4口是wan口，切记切记</p>
+
+<p>3.官方的openwrt的iptables没有ipset和--to-port,要另装：</p>
+
+<p>opkg install iptables-mod-nat-extra</p>
+
+<p>opkg install ipset</p>
+
+<p>4.备份/etc/init.d/dnsmasq，因为等下要装的dnsmasq的启动脚本有问题</p>
+
+<p>5.卸载自带的dnsmasq，安装dnsmasq-full，地址：</p>
+
+<p>http://sourceforge.net/projects/openwrt-dist/files/dnsmasq/
+​​​​​记得依赖包一定要装，libgmp，libnettle,要装作者提供的版本</p>
+
+<p>6.其他没什么了，用备份的dnsmasq替换现有的，就可以了，然后剩下的就是</p>
+
+<p>安装配置ss，配置dnsmasq了</p>
+
+<p>ipset设置：</p>
+
+<p>ipset -N gfwlist iphash</p>
+
+<p>iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "official-openwrt-shadowsocks.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
