@@ -32,11 +32,11 @@
 2.机器可能被改过，刷成openwrt后，lan4口是wan口，切记切记
 
 3.官方的openwrt的iptables没有ipset和--to-port,要另装：
-
+~~~~
 opkg install iptables-mod-nat-extra
 
 opkg install ipset
-
+~~~~
 4.备份/etc/init.d/dnsmasq，因为等下要装的dnsmasq的启动脚本有问题
 
 5.卸载自带的dnsmasq，安装dnsmasq-full，地址：
@@ -50,9 +50,11 @@ http://sourceforge.net/projects/openwrt-dist/files/dnsmasq/
 
 ipset设置：
 
+~~~~
 ipset -N gfwlist iphash
 
 iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+~~~~
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
@@ -63,13 +65,11 @@ iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT 
 
 <p>2.机器可能被改过，刷成openwrt后，lan4口是wan口，切记切记</p>
 
-<p>3.官方的openwrt的iptables没有ipset和--to-port,要另装：</p>
+<p>3.官方的openwrt的iptables没有ipset和--to-port,要另装：
+</p><pre><code>opkg install iptables-mod-nat-extra<p></p>
 
-<p>opkg install iptables-mod-nat-extra</p>
-
-<p>opkg install ipset</p>
-
-<p>4.备份/etc/init.d/dnsmasq，因为等下要装的dnsmasq的启动脚本有问题</p>
+</code><p><code>opkg install ipset
+</code></p></pre>4.备份/etc/init.d/dnsmasq，因为等下要装的dnsmasq的启动脚本有问题<p></p>
 
 <p>5.卸载自带的dnsmasq，安装dnsmasq-full，地址：</p>
 
@@ -82,9 +82,11 @@ iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT 
 
 <p>ipset设置：</p>
 
-<p>ipset -N gfwlist iphash</p>
+<p>~~~~
+ipset -N gfwlist iphash</p>
 
-<p>iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080</p>
+<p>iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+~~~~</p>
 <!-- content end -->
 </div>
 <br>
