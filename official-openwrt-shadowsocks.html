@@ -50,11 +50,11 @@ http://sourceforge.net/projects/openwrt-dist/files/dnsmasq/
 
 ipset设置：
 
-~~~~
-ipset -N gfwlist iphash
 
-iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
-~~~~
+    ipset -N gfwlist iphash
+
+    iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
@@ -82,11 +82,10 @@ iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT 
 
 <p>ipset设置：</p>
 
-<p>~~~~
-ipset -N gfwlist iphash</p>
+<pre><code>ipset -N gfwlist iphash
 
-<p>iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
-~~~~</p>
+iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+</code></pre>
 <!-- content end -->
 </div>
 <br>
